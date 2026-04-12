@@ -13,18 +13,16 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    setSuccessMsg('');
     
     try {
       if (isSignUp) {
-        await authService.signUp(email, password);
-        setSuccessMsg('Garden initialized. Check your email for activation.');
+        const user = await authService.signUp(email, password);
+        onLogin(user);
       } else {
         const user = await authService.signIn(email, password);
         onLogin(user);
@@ -93,11 +91,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 {error}
               </div>
             )}
-            {successMsg && (
-              <div className="p-4 bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest rounded-2xl text-center border border-indigo-100">
-                {successMsg}
-              </div>
-            )}
+
 
             <div className="space-y-6">
               <div className="space-y-2">
